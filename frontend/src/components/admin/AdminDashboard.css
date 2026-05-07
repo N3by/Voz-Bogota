@@ -1,0 +1,87 @@
+.admin-dashboard {
+  padding: var(--space-5);
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-6);
+}
+
+.admin__loading {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 50vh;
+  color: var(--color-muted);
+}
+
+.admin__header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+}
+
+.admin__title {
+  font-size: var(--font-size-2xl);
+  font-weight: 700;
+  margin-bottom: var(--space-1);
+}
+
+.admin__surveys-btn {
+  width: auto;
+  min-height: auto;
+  padding: var(--space-2) var(--space-4);
+  font-size: var(--font-size-sm);
+}
+
+.admin__kpis {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: var(--space-3);
+}
+
+.admin__kpi-card {
+  background: var(--color-bg);
+  border-radius: var(--radius-lg);
+  padding: var(--space-4);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--space-1);
+  text-align: center;
+}
+
+.admin__kpi-icon { font-size: 1.5rem; }
+
+.admin__kpi-value {
+  font-size: var(--font-size-2xl);
+  font-weight: 700;
+  color: var(--color-primary);
+}
+
+.admin__kpi-label {
+  font-size: var(--font-size-xs);
+  color: var(--color-muted);
+}
+
+.admin__chart-section {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+}
+
+.admin__section-title {
+  font-size: var(--font-size-base);
+  font-weight: 600;
+}
+
+.admin__chart {
+  background: var(--color-bg);
+  border-radius: var(--radius-lg);
+  padding: var(--space-4);
+  overflow: hidden;
+}
+
+.admin__map {
+  height: 250px;
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+}

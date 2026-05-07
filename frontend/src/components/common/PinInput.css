@@ -1,0 +1,36 @@
+.pin-wrapper {
+  display: flex;
+  justify-content: center;
+  cursor: pointer;
+  position: relative;
+}
+
+.pin-dots {
+  display: flex;
+  gap: 1.25rem;
+  align-items: center;
+  padding: 1rem;
+}
+
+.pin-dot {
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  border: 2px solid var(--color-border);
+  background: transparent;
+  transition: all 200ms ease;
+}
+
+.pin-dot--filled {
+  background: var(--color-primary);
+  border-color: var(--color-primary);
+  transform: scale(1.1);
+}
+
+.pin-input-hidden {
+  position: absolute;
+  opacity: 0;
+  width: 1px;
+  height: 1px;
+  pointer-events: none;
+}

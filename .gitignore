@@ -1,0 +1,39 @@
+# Python
+__pycache__/
+*.py[cod]
+*.pyo
+*.pyd
+venv/
+env/
+.venv/
+*.egg-info/
+dist/
+build/
+.pytest_cache/
+.mypy_cache/
+
+# Environment
+.env
+*.env.local
+
+# Node / Frontend
+node_modules/
+frontend/dist/
+frontend/.vite/
+*.log
+npm-debug.log*
+
+# Docker
+*.dockerignore
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+.DS_Store
+Thumbs.db
+
+# Kubernetes secrets
+k8s/secrets/*.yaml
+!k8s/secrets/*.example.yaml
