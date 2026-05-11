@@ -23,8 +23,8 @@ frontend/.vite/
 *.log
 npm-debug.log*
 
-# Docker
-*.dockerignore
+# Docker build artifacts (not .dockerignore files — those must be tracked)
+docker-compose.override.yml
 
 # IDE
 .vscode/
