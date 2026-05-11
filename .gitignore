@@ -37,3 +37,10 @@ Thumbs.db
 # Kubernetes secrets
 k8s/secrets/*.yaml
 !k8s/secrets/*.example.yaml
+
+# Playwright / testing artifacts
+.playwright-mcp/
+*.png
+*.jpg
+*.jpeg
+!docs/**/*.png

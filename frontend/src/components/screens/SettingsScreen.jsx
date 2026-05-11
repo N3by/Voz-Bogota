@@ -1,5 +1,6 @@
 import { useNavigate } from 'react-router-dom'
 import { useAuthStore } from '../../store/authStore'
+import { LOCALIDADES } from '../../constants/localidades'
 import './SettingsScreen.css'
 
 export default function SettingsScreen() {
@@ -14,7 +15,7 @@ export default function SettingsScreen() {
 
   if (!user) return null
 
-  const localidadNombre = user.localidad_id ? `Localidad #${user.localidad_id}` : 'No especificada'
+  const localidadNombre = LOCALIDADES.find((l) => l.id === user.localidad_id)?.nombre ?? 'No especificada'
 
   return (
     <div className="settings-screen screen">

@@ -1,0 +1,12 @@
+export const LOCALIDADES = [
+  { id: 1, nombre: 'Usaquén' }, { id: 2, nombre: 'Chapinero' },
+  { id: 3, nombre: 'Santa Fe' }, { id: 4, nombre: 'San Cristóbal' },
+  { id: 5, nombre: 'Usme' }, { id: 6, nombre: 'Tunjuelito' },
+  { id: 7, nombre: 'Bosa' }, { id: 8, nombre: 'Kennedy' },
+  { id: 9, nombre: 'Fontibón' }, { id: 10, nombre: 'Engativá' },
+  { id: 11, nombre: 'Suba' }, { id: 12, nombre: 'Barrios Unidos' },
+  { id: 13, nombre: 'Teusaquillo' }, { id: 14, nombre: 'Los Mártires' },
+  { id: 15, nombre: 'Antonio Nariño' }, { id: 16, nombre: 'Puente Aranda' },
+  { id: 17, nombre: 'La Candelaria' }, { id: 18, nombre: 'Rafael Uribe' },
+  { id: 19, nombre: 'Ciudad Bolívar' }, { id: 20, nombre: 'Sumapaz' },
+]
