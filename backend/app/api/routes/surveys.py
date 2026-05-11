@@ -1,5 +1,5 @@
 import json
-from fastapi import APIRouter, Depends, HTTPException
+from fastapi import APIRouter, Depends, HTTPException, Response as HTTPResponse
 from sqlalchemy.orm import Session
 from sqlalchemy import func
 from app.db.database import get_db
@@ -15,10 +15,12 @@ CACHE_KEY_LIST = "surveys:active:list"
 
 
 @router.get("", response_model=List[SurveyListItem])
-def list_surveys(include_closed: bool = False, db: Session = Depends(get_db)):
+def list_surveys(include_closed: bool = False, http_response: HTTPResponse = None, db: Session = Depends(get_db)):
     cache_key = "surveys:all:list" if include_closed else CACHE_KEY_LIST
     cached = get_cache(cache_key)
     if cached:
+        if http_response is not None:
+            http_response.headers["X-Cache"] = "HIT"
         return json.loads(cached)
 
     query = db.query(Survey)
@@ -42,6 +44,8 @@ def list_surveys(include_closed: bool = False, db: Session = Depends(get_db)):
         result.append(item)
 
     set_cache(cache_key, json.dumps([i.model_dump(mode="json") for i in result]), ttl=60)
+    if http_response is not None:
+        http_response.headers["X-Cache"] = "MISS"
     return result
 
 
