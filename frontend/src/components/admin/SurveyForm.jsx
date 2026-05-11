@@ -44,12 +44,18 @@ export default function SurveyForm() {
     try {
       if (isEdit) {
         await api.put(`/surveys/${id}`, form)
+        navigate('/admin/encuestas')
       } else {
-        await api.post('/surveys', { ...form, duracion_min: Number(form.duracion_min), questions: [] })
+        const { data } = await api.post('/surveys', { ...form, duracion_min: Number(form.duracion_min), questions: [] })
+        navigate(`/admin/encuestas/${data.id}/editar`)
       }
-      navigate('/admin/encuestas')
     } catch (err) {
-      setError(err.response?.data?.detail || 'Error al guardar')
+      const detail = err.response?.data?.detail
+      let msg = 'Error al guardar'
+      if (!err.response) msg = 'Sin conexión con el servidor'
+      else if (typeof detail === 'string') msg = detail
+      else if (Array.isArray(detail)) msg = detail.map((d) => d.msg ?? JSON.stringify(d)).join(', ')
+      setError(msg)
     } finally {
       setSaving(false)
     }

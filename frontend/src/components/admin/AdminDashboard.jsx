@@ -11,6 +11,7 @@ export default function AdminDashboard() {
   const [surveys, setSurveys] = useState([])
   const navigate = useNavigate()
   const mapRef = useRef(null)
+  const mapInitialized = useRef(false)
 
   useEffect(() => {
     Promise.all([api.get('/admin/stats'), api.get('/surveys')])
@@ -21,7 +22,8 @@ export default function AdminDashboard() {
   }, [])
 
   useEffect(() => {
-    if (!stats || !mapRef.current) return
+    if (!stats || !mapRef.current || mapInitialized.current) return
+    mapInitialized.current = true
     let mapInstance = null
 
     const initAdminMap = async () => {
@@ -31,7 +33,7 @@ export default function AdminDashboard() {
       mapInstance = L.map(mapRef.current, { center: [4.6097, -74.0817], zoom: 10, zoomControl: false })
       L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', { attribution: '© OSM' }).addTo(mapInstance)
 
-      const { data } = await api.get('/admin/heatmap')
+      const { data } = await api.get('/surveys/heatmap/public')
       const points = data.filter((d) => d.intensidad > 0).map((d) => [d.lat, d.lng, Math.min(d.intensidad / 5, 1)])
       if (points.length > 0) {
         L.heatLayer(points, { radius: 40, blur: 30, gradient: { 0.2: '#FFEB3B', 0.5: '#FF9800', 1.0: '#C8102E' } }).addTo(mapInstance)
@@ -46,7 +48,7 @@ export default function AdminDashboard() {
     return <div className="admin-dashboard screen"><div className="admin__loading">Cargando analítica...</div></div>
   }
 
-  const barData = stats.participaciones_por_localidad
+  const barData = (stats.participaciones_por_localidad ?? [])
     .filter((d) => d.total > 0)
     .sort((a, b) => b.total - a.total)
     .slice(0, 10)

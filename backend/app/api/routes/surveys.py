@@ -15,12 +15,17 @@ CACHE_KEY_LIST = "surveys:active:list"
 
 
 @router.get("", response_model=List[SurveyListItem])
-def list_surveys(db: Session = Depends(get_db)):
-    cached = get_cache(CACHE_KEY_LIST)
+def list_surveys(include_closed: bool = False, db: Session = Depends(get_db)):
+    cache_key = "surveys:all:list" if include_closed else CACHE_KEY_LIST
+    cached = get_cache(cache_key)
     if cached:
         return json.loads(cached)
 
-    surveys = db.query(Survey).filter(Survey.estado == EstadoEncuesta.activa).all()
+    query = db.query(Survey)
+    if not include_closed:
+        query = query.filter(Survey.estado == EstadoEncuesta.activa)
+    surveys = query.all()
+
     result = []
     for s in surveys:
         count = db.query(func.count(Response.id)).filter(Response.survey_id == s.id).scalar()
@@ -36,7 +41,7 @@ def list_surveys(db: Session = Depends(get_db)):
         )
         result.append(item)
 
-    set_cache(CACHE_KEY_LIST, json.dumps([i.model_dump(mode="json") for i in result]), ttl=60)
+    set_cache(cache_key, json.dumps([i.model_dump(mode="json") for i in result]), ttl=60)
     return result
 
 

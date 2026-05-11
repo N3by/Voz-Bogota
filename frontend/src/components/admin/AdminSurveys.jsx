@@ -10,15 +10,21 @@ export default function AdminSurveys() {
 
   const load = () => {
     setLoading(true)
-    api.get('/surveys').then(({ data }) => setSurveys(data)).finally(() => setLoading(false))
+    api.get('/surveys?include_closed=true').then(({ data }) => setSurveys(data)).finally(() => setLoading(false))
   }
 
   useEffect(load, [])
 
   const toggleStatus = async (survey) => {
+    const accion = survey.estado === 'activa' ? 'cerrar' : 'activar'
+    if (!window.confirm(`¿Seguro que deseas ${accion} "${survey.titulo}"?`)) return
     const nuevoEstado = survey.estado === 'activa' ? 'cerrada' : 'activa'
-    await api.patch(`/surveys/${survey.id}/status`, { estado: nuevoEstado })
-    load()
+    try {
+      await api.patch(`/surveys/${survey.id}/status`, { estado: nuevoEstado })
+      load()
+    } catch {
+      alert('No se pudo actualizar el estado. Intenta de nuevo.')
+    }
   }
 
   return (
@@ -42,7 +48,7 @@ export default function AdminSurveys() {
                 <span className={`badge badge--${s.estado === 'activa' ? 'active' : 'closed'}`}>
                   {s.estado}
                 </span>
-                <span className="text-muted">{s.participant_count} participantes</span>
+                <span className="text-muted">{s.participant_count ?? 0} participantes</span>
               </div>
               <h3 className="admin-survey-card__title">{s.titulo}</h3>
               {s.categoria && <span className="admin-survey-card__cat">{s.categoria}</span>}

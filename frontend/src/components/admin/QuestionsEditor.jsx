@@ -12,10 +12,17 @@ export default function QuestionsEditor({ surveyId, questions, onUpdate }) {
   const [newQ, setNewQ] = useState({ texto: '', tipo: 'opcion_multiple', options: [{ texto: '' }, { texto: '' }] })
   const [showForm, setShowForm] = useState(false)
   const [saving, setSaving] = useState(false)
+  const [addError, setAddError] = useState('')
 
   const addQuestion = async () => {
     if (!newQ.texto.trim()) return
+    if (newQ.tipo === 'opcion_multiple' &&
+        newQ.options.filter((o) => o.texto.trim()).length < 2) {
+      setAddError('Agrega al menos 2 opciones')
+      return
+    }
     setSaving(true)
+    setAddError('')
     try {
       const payload = {
         texto: newQ.texto,
@@ -29,14 +36,21 @@ export default function QuestionsEditor({ surveyId, questions, onUpdate }) {
       onUpdate(data.questions)
       setNewQ({ texto: '', tipo: 'opcion_multiple', options: [{ texto: '' }, { texto: '' }] })
       setShowForm(false)
+    } catch {
+      setAddError('Error al guardar la pregunta. Intenta de nuevo.')
     } finally {
       setSaving(false)
     }
   }
 
   const deleteQuestion = async (qId) => {
-    await api.delete(`/questions/${qId}`)
-    onUpdate(questions.filter((q) => q.id !== qId))
+    if (!window.confirm('¿Eliminar esta pregunta?')) return
+    try {
+      await api.delete(`/questions/${qId}`)
+      onUpdate(questions.filter((q) => q.id !== qId))
+    } catch {
+      alert('No se pudo eliminar la pregunta. Intenta de nuevo.')
+    }
   }
 
   const setOptionText = (i, value) => {
@@ -117,11 +131,12 @@ export default function QuestionsEditor({ surveyId, questions, onUpdate }) {
             </div>
           )}
 
+          {addError && <p className="survey-form__error">{addError}</p>}
           <div className="q-editor__form-actions">
             <button className="btn btn--primary" onClick={addQuestion} disabled={saving}>
               {saving ? 'Guardando...' : 'Agregar pregunta'}
             </button>
-            <button className="btn btn--ghost" onClick={() => setShowForm(false)}>Cancelar</button>
+            <button className="btn btn--ghost" onClick={() => { setShowForm(false); setAddError('') }}>Cancelar</button>
           </div>
         </div>
       ) : (
