@@ -1,5 +1,4 @@
 import { useState, useEffect, useRef } from 'react'
-import { useNavigate } from 'react-router-dom'
 import { BarChart, Bar, XAxis, YAxis, Tooltip, ResponsiveContainer, PieChart, Pie, Cell, Legend } from 'recharts'
 import api from '../../services/api'
 import './AdminDashboard.css'
@@ -9,7 +8,6 @@ const COLORS = ['#C8102E', '#1a1a2e', '#6b7280', '#2e7d32', '#f59e0b', '#3b82f6'
 export default function AdminDashboard() {
   const [stats, setStats] = useState(null)
   const [surveys, setSurveys] = useState([])
-  const navigate = useNavigate()
   const mapRef = useRef(null)
   const mapInitialized = useRef(false)
 
@@ -68,9 +66,6 @@ export default function AdminDashboard() {
           <h1 className="admin__title">Panel Admin</h1>
           <p className="text-muted">Analítica en tiempo real</p>
         </div>
-        <button className="btn btn--ghost admin__surveys-btn" onClick={() => navigate('/admin/encuestas')}>
-          Encuestas
-        </button>
       </div>
 
       <div className="admin__kpis">

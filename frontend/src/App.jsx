@@ -1,6 +1,7 @@
 import { Routes, Route, Navigate, useLocation } from 'react-router-dom'
 import { useAuthStore } from './store/authStore'
 import BottomNav from './components/common/BottomNav'
+import AdminNav from './components/admin/AdminNav'
 
 import SplashScreen from './components/screens/SplashScreen'
 import LoginScreen from './components/screens/LoginScreen'
@@ -14,6 +15,7 @@ import AdminSurveys from './components/admin/AdminSurveys'
 import SurveyForm from './components/admin/SurveyForm'
 
 const NO_NAV_PATHS = ['/', '/login', '/registro', '/olvide-pin']
+const ADMIN_NAV_PATHS = ['/admin', '/admin/encuestas']
 
 function RequireAuth({ children }) {
   const user = useAuthStore((s) => s.user)
@@ -30,9 +32,10 @@ function RequireAdmin({ children }) {
 
 export default function App() {
   const location = useLocation()
-  const showNav = !NO_NAV_PATHS.includes(location.pathname) &&
+  const showCitizenNav = !NO_NAV_PATHS.includes(location.pathname) &&
     !location.pathname.startsWith('/encuestas/') &&
     !location.pathname.startsWith('/admin')
+  const showAdminNav = ADMIN_NAV_PATHS.includes(location.pathname)
 
   return (
     <div className="app-shell">
@@ -59,7 +62,8 @@ export default function App() {
         <Route path="*" element={<Navigate to="/" replace />} />
       </Routes>
 
-      {showNav && <BottomNav />}
+      {showCitizenNav && <BottomNav />}
+      {showAdminNav && <AdminNav />}
     </div>
   )
 }

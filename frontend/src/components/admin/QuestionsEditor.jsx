@@ -5,7 +5,6 @@ import './QuestionsEditor.css'
 const TIPOS = [
   { value: 'opcion_multiple', label: 'Opción múltiple' },
   { value: 'escala', label: 'Escala 1-5' },
-  { value: 'texto_libre', label: 'Texto libre' },
 ]
 
 export default function QuestionsEditor({ surveyId, questions, onUpdate }) {

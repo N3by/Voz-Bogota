@@ -35,7 +35,7 @@ export default function SurveyScreen() {
   }
 
   const selectScale = (val) => {
-    setAnswers((prev) => ({ ...prev, [question.id]: { option_id: val } }))
+    setAnswers((prev) => ({ ...prev, [question.id]: { texto_libre: String(val) } }))
   }
 
   const setFreeText = (text) => {
@@ -45,6 +45,7 @@ export default function SurveyScreen() {
   const canContinue = () => {
     const ans = answers[question?.id]
     if (!ans) return false
+    if (question.tipo === 'escala') return ans.texto_libre != null
     if (question.tipo === 'texto_libre') return ans.texto_libre?.trim().length > 0
     return ans.option_id != null
   }
@@ -104,7 +105,7 @@ export default function SurveyScreen() {
             {[1, 2, 3, 4, 5].map((n) => (
               <button
                 key={n}
-                className={`scale-btn ${answers[question.id]?.option_id === n ? 'scale-btn--selected' : ''}`}
+                className={`scale-btn ${answers[question.id]?.texto_libre === String(n) ? 'scale-btn--selected' : ''}`}
                 onClick={() => selectScale(n)}
               >
                 {n}
